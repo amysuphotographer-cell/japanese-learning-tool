@@ -1,0 +1,1458 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>日语动词变形学习工具</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft YaHei', 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            padding: 40px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+
+        .input-section {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: bold;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 12px 15px;
+            font-size: 1.1em;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .verb-type-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .type-btn {
+            flex: 1;
+            min-width: 150px;
+            padding: 12px 20px;
+            font-size: 1em;
+            border: 2px solid #ddd;
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .type-btn:hover {
+            background: #f0f0f0;
+        }
+
+        .type-btn.active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        .conjugate-btn {
+            width: 100%;
+            padding: 15px;
+            font-size: 1.2em;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.2s;
+            font-weight: bold;
+        }
+
+        .conjugate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .results {
+            display: none;
+        }
+
+        .results.show {
+            display: block;
+        }
+
+        .result-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .result-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 12px;
+            border-left: 4px solid #667eea;
+        }
+
+        .result-card h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+
+        .result-card .japanese {
+            font-size: 2em;
+            color: #333;
+            margin-bottom: 12px;
+            font-weight: bold;
+        }
+
+        .result-card .explanation {
+            color: #999;
+            font-size: 0.95em;
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+
+        .speak-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9em;
+            margin-top: 10px;
+            transition: all 0.3s;
+        }
+
+        .speak-btn:hover {
+            background: #764ba2;
+            transform: scale(1.05);
+        }
+
+        .speak-btn:active {
+            transform: scale(0.95);
+        }
+
+        .common-verbs {
+            margin-top: 30px;
+        }
+
+        .common-verbs h2 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .verb-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 10px;
+        }
+
+        .verb-item {
+            padding: 10px 15px;
+            background: #f0f0f0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        .verb-item:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .verb-item .verb-jp {
+            font-weight: bold;
+            margin-bottom: 3px;
+        }
+
+        .verb-item .verb-cn {
+            font-size: 0.85em;
+            color: #666;
+        }
+
+        .verb-item:hover .verb-cn {
+            color: white;
+        }
+
+        .rules-section {
+            background: #fff9e6;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            border-left: 4px solid #ffc107;
+        }
+
+        .rules-section h3 {
+            color: #f57c00;
+            margin-bottom: 10px;
+        }
+
+        .rules-section ul {
+            margin-left: 20px;
+            color: #666;
+            line-height: 1.8;
+        }
+
+        .header-container {
+            position: relative;
+            margin-bottom: 30px;
+        }
+
+        .help-btn {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #667eea;
+            color: white;
+            border: none;
+            font-size: 1.5em;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .help-btn:hover {
+            background: #764ba2;
+            transform: scale(1.1);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            animation: fadeIn 0.3s;
+        }
+
+        .modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 800px;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+            animation: slideIn 0.3s;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 2em;
+            color: #999;
+            cursor: pointer;
+            border: none;
+            background: none;
+            transition: color 0.3s;
+        }
+
+        .close-btn:hover {
+            color: #333;
+        }
+
+        .help-section {
+            margin-bottom: 25px;
+        }
+
+        .help-section h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 1.3em;
+        }
+
+        .help-section ul {
+            margin-left: 20px;
+            line-height: 1.8;
+        }
+
+        .help-section p {
+            line-height: 1.6;
+            color: #666;
+        }
+
+        .example {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            border-left: 3px solid #667eea;
+        }
+
+        .example strong {
+            color: #667eea;
+        }
+
+        .mode-switch {
+            display: flex;
+            justify-content: center;
+            gap: 0;
+            margin-bottom: 30px;
+            background: #f0f0f0;
+            padding: 5px;
+            border-radius: 10px;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .mode-btn {
+            flex: 1;
+            padding: 12px 20px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: bold;
+            color: #666;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+
+        .mode-btn.active {
+            background: white;
+            color: #667eea;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .practice-mode {
+            display: none;
+        }
+
+        .practice-mode.show {
+            display: block;
+        }
+
+        .quiz-card {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .quiz-question {
+            font-size: 2em;
+            color: #333;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .quiz-hint {
+            color: #666;
+            margin-bottom: 20px;
+            font-size: 1.1em;
+        }
+
+        .quiz-input {
+            width: 100%;
+            max-width: 400px;
+            padding: 15px;
+            font-size: 1.3em;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            text-align: center;
+            margin: 20px auto;
+            display: block;
+        }
+
+        .quiz-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .quiz-btn {
+            padding: 12px 30px;
+            font-size: 1em;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: bold;
+        }
+
+        .check-btn {
+            background: #667eea;
+            color: white;
+        }
+
+        .check-btn:hover {
+            background: #764ba2;
+        }
+
+        .skip-btn {
+            background: #ccc;
+            color: #666;
+        }
+
+        .skip-btn:hover {
+            background: #bbb;
+        }
+
+        .next-btn {
+            background: #4caf50;
+            color: white;
+        }
+
+        .next-btn:hover {
+            background: #45a049;
+        }
+
+        .feedback {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 1.1em;
+            font-weight: bold;
+        }
+
+        .feedback.correct {
+            background: #d4edda;
+            color: #155724;
+            border: 2px solid #c3e6cb;
+        }
+
+        .feedback.incorrect {
+            background: #f8d7da;
+            color: #721c24;
+            border: 2px solid #f5c6cb;
+        }
+
+        .answer-display {
+            margin-top: 15px;
+            padding: 15px;
+            background: #fff9e6;
+            border-radius: 8px;
+            border-left: 4px solid #ffc107;
+        }
+
+        .score-display {
+            text-align: center;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-size: 1.2em;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 1.8em;
+            }
+
+            .type-btn {
+                min-width: 100px;
+            }
+
+            .modal-content {
+                margin: 20px;
+                max-height: 90vh;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header-container">
+            <button class="help-btn" onclick="showHelp()">?</button>
+            <h1>日语动词变形学习工具</h1>
+            <p class="subtitle">動詞の活用練習ツール - 让日语动词变形变得简单！</p>
+        </div>
+
+        <!-- 模式切换 -->
+        <div class="mode-switch">
+            <button class="mode-btn active" onclick="switchMode('learn')">学习模式</button>
+            <button class="mode-btn" onclick="switchMode('practice')">练习模式</button>
+        </div>
+
+        <!-- 学习模式 -->
+        <div id="learnMode" class="learn-mode">
+        <div class="input-section">
+            <div class="input-group">
+                <label for="verbInput">输入动词原形（辞書形）：</label>
+                <input type="text" id="verbInput" placeholder="例如：食べる、行く、する" autocomplete="off">
+            </div>
+
+            <div class="input-group">
+                <label>动词类型（自动识别，可手动修改）：</label>
+                <div class="verb-type-buttons">
+                    <button class="type-btn" data-type="ichidan">一段动词 (る动词)</button>
+                    <button class="type-btn" data-type="godan">五段动词 (う动词)</button>
+                    <button class="type-btn" data-type="irregular">不规则动词</button>
+                </div>
+            </div>
+
+            <button class="conjugate-btn" onclick="conjugateVerb()">开始变形</button>
+        </div>
+
+        <div class="results" id="results">
+            <div class="rules-section" id="rulesSection"></div>
+            <div class="result-grid" id="resultGrid"></div>
+        </div>
+
+        <div class="common-verbs">
+            <h2>常用动词快速选择</h2>
+            <div class="verb-list" id="verbList"></div>
+        </div>
+        </div>
+
+        <!-- 练习模式 -->
+        <div id="practiceMode" class="practice-mode">
+            <div class="score-display" id="scoreDisplay">
+                正确：<span id="correctCount">0</span> / 错误：<span id="wrongCount">0</span> / 总计：<span id="totalCount">0</span>
+            </div>
+
+            <div class="quiz-card">
+                <div class="quiz-question" id="quizQuestion">加载中...</div>
+                <div class="quiz-hint" id="quizHint"></div>
+                <button class="speak-btn" onclick="speakText(currentQuiz.verb)" style="margin: 10px auto; display: block;">🔊 发音</button>
+
+                <input type="text" id="quizInput" class="quiz-input" placeholder="请输入答案" autocomplete="off">
+
+                <div class="quiz-buttons">
+                    <button class="quiz-btn check-btn" onclick="checkAnswer()">检查答案</button>
+                    <button class="quiz-btn skip-btn" onclick="skipQuestion()">跳过</button>
+                </div>
+
+                <div id="feedback"></div>
+            </div>
+
+            <div style="text-align: center; margin-top: 20px;">
+                <button class="quiz-btn next-btn" onclick="nextQuestion()" style="display: none;" id="nextBtn">下一题</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 帮助弹窗 -->
+    <div id="helpModal" class="modal" onclick="closeHelp(event)">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <button class="close-btn" onclick="closeHelp()">&times;</button>
+            <h2 style="color: #667eea; margin-bottom: 20px;">使用说明</h2>
+
+            <div class="help-section">
+                <h3>📖 如何使用</h3>
+                <p><strong>方法一：快速选择</strong></p>
+                <ul>
+                    <li>在页面底部点击任意常用动词，系统会自动显示其所有变形</li>
+                </ul>
+                <p><strong>方法二：手动输入</strong></p>
+                <ul>
+                    <li>在输入框中输入日语动词的原形（辞書形）</li>
+                    <li>系统会自动识别动词类型（一段、五段、不规则）</li>
+                    <li>如果识别错误，可以手动点击按钮修改类型</li>
+                    <li>点击"开始变形"按钮查看所有变形结果</li>
+                </ul>
+            </div>
+
+            <div class="help-section">
+                <h3>📚 动词分类详解</h3>
+
+                <div class="example">
+                    <strong>一段动词（る动词）</strong>
+                    <p>• 特征：词尾是「る」，且る前面是「い」段或「え」段假名</p>
+                    <p>• 变形规则：去掉「る」，加上相应词尾</p>
+                    <p>• 例子：</p>
+                    <ul>
+                        <li>食べる（吃）→ 食べ + ます = 食べます</li>
+                        <li>見る（看）→ 見 + て = 見て</li>
+                        <li>起きる（起床）→ 起き + た = 起きた</li>
+                    </ul>
+                </div>
+
+                <div class="example">
+                    <strong>五段动词（う动词）</strong>
+                    <p>• 特征：词尾是う段假名（う/く/ぐ/す/つ/ぬ/ぶ/む/る）</p>
+                    <p>• 变形规则：词尾按五十音图的段变化</p>
+                    <p>• 例子：</p>
+                    <ul>
+                        <li>書く（写）→ 書き（い段）+ ます = 書きます</li>
+                        <li>飲む（喝）→ 飲ん（ん）+ で = 飲んで</li>
+                        <li>話す（说）→ 話し（し）+ た = 話した</li>
+                    </ul>
+                    <p style="color: #f57c00; margin-top: 10px;">⚠️ 注意：有些以「る」结尾的动词也是五段动词，如：帰る、走る、切る</p>
+                </div>
+
+                <div class="example">
+                    <strong>不规则动词</strong>
+                    <p>• 只有两个基本不规则动词：</p>
+                    <ul>
+                        <li><strong>する</strong>（做）：します、して、した</li>
+                        <li><strong>来る</strong>（来）：来ます、来て、来た</li>
+                    </ul>
+                    <p>• 复合动词：以「する」结尾的动词按「する」变形</p>
+                    <ul>
+                        <li>勉強する（学习）→ 勉強します、勉強して</li>
+                        <li>料理する（做菜）→ 料理します、料理して</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="help-section">
+                <h3>🔄 常用变形说明</h3>
+                <ul>
+                    <li><strong>ます形：</strong>礼貌形，用于正式场合</li>
+                    <li><strong>て形：</strong>连接形，表示"...然后"或用于请求</li>
+                    <li><strong>た形：</strong>过去形，表示过去发生的动作</li>
+                    <li><strong>ない形：</strong>否定形，表示"不..."</li>
+                    <li><strong>ば形：</strong>假定形，表示"如果..."</li>
+                    <li><strong>可能形：</strong>表示"能够..."</li>
+                    <li><strong>意志形：</strong>表示"让我们..."</li>
+                    <li><strong>命令形：</strong>表示命令</li>
+                    <li><strong>被动形：</strong>表示被动</li>
+                    <li><strong>使役形：</strong>表示"让...做"</li>
+                </ul>
+            </div>
+
+            <div class="help-section">
+                <h3>💡 小技巧</h3>
+                <ul>
+                    <li>本工具内置了100+常用动词词典，输入后会自动显示中文释义</li>
+                    <li>系统会自动识别动词类型，准确率较高</li>
+                    <li>对于特殊动词（如帰る、走る等），系统已做特殊处理</li>
+                    <li>支持键盘回车键快速查询</li>
+                </ul>
+            </div>
+
+            <div class="help-section">
+                <h3>📝 学习建议</h3>
+                <ul>
+                    <li>先从常用动词开始练习，熟悉变形规律</li>
+                    <li>一段动词变形相对简单，建议先掌握</li>
+                    <li>五段动词需要记忆不同词尾的变化规律</li>
+                    <li>する和来る是特殊动词，需要单独记忆</li>
+                    <li>多练习、多对比，找出规律</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let selectedType = '';
+
+        // 动词词典（包含中文释义）
+        const verbDictionary = {
+            // 一段动词
+            '食べる': '吃',
+            '見る': '看',
+            '起きる': '起床',
+            '寝る': '睡觉',
+            '教える': '教',
+            '着る': '穿',
+            '開ける': '打开',
+            '閉める': '关闭',
+            '考える': '考虑',
+            '答える': '回答',
+            '忘れる': '忘记',
+            '覚える': '记住',
+            '出る': '出去',
+            '入れる': '放入',
+            '捨てる': '扔掉',
+            '疲れる': '疲劳',
+            '晴れる': '晴天',
+            '生きる': '活着',
+            '借りる': '借',
+            '降りる': '下车',
+            '浴びる': '淋浴',
+            '信じる': '相信',
+
+            // 五段动词
+            '行く': '去',
+            '書く': '写',
+            '読む': '读',
+            '話す': '说',
+            '聞く': '听',
+            '買う': '买',
+            '会う': '见面',
+            '帰る': '回去',
+            '待つ': '等待',
+            '飲む': '喝',
+            '遊ぶ': '玩',
+            '死ぬ': '死',
+            '立つ': '站',
+            '座る': '坐',
+            '売る': '卖',
+            '作る': '制作',
+            '取る': '拿',
+            '歩く': '走路',
+            '泳ぐ': '游泳',
+            '急ぐ': '着急',
+            '呼ぶ': '叫',
+            '休む': '休息',
+            '住む': '居住',
+            '吸う': '吸',
+            '洗う': '洗',
+            '使う': '使用',
+            '歌う': '唱歌',
+            '笑う': '笑',
+            '持つ': '持有',
+            '勝つ': '赢',
+            '消す': '关闭/熄灭',
+            '貸す': '借出',
+            '出す': '拿出',
+            '返す': '归还',
+            '渡す': '交给',
+            '押す': '按',
+            '走る': '跑',
+            '切る': '切',
+            '知る': '知道',
+            '入る': '进入',
+            '要る': '需要',
+            '乗る': '乘坐',
+            '降る': '下雨/下雪',
+            '撮る': '拍摄',
+            '分かる': '明白',
+            '始まる': '开始',
+            '終わる': '结束',
+            '頑張る': '加油',
+            '働く': '工作',
+            '動く': '移动',
+            '置く': '放置',
+            '咲く': '开花',
+            '弾く': '弹奏',
+            '鳴く': '鸣叫',
+            '泣く': '哭',
+            '開く': '打开',
+            '引く': '拉',
+
+            // 不规则动词
+            'する': '做',
+            '来る': '来',
+            '勉強する': '学习',
+            '散歩する': '散步',
+            '料理する': '做菜',
+            '掃除する': '打扫',
+            '洗濯する': '洗衣服',
+            '買い物する': '购物',
+            '運転する': '开车',
+            '電話する': '打电话',
+            '結婚する': '结婚',
+            '仕事する': '工作',
+            '旅行する': '旅行',
+            '予約する': '预约',
+            '紹介する': '介绍',
+            '説明する': '说明',
+            '準備する': '准备',
+            '練習する': '练习'
+        };
+
+        // 常用动词列表
+        const commonVerbs = [
+            // 一段动词
+            { jp: '食べる', cn: '吃', type: 'ichidan' },
+            { jp: '見る', cn: '看', type: 'ichidan' },
+            { jp: '起きる', cn: '起床', type: 'ichidan' },
+            { jp: '寝る', cn: '睡觉', type: 'ichidan' },
+            { jp: '教える', cn: '教', type: 'ichidan' },
+            { jp: '着る', cn: '穿', type: 'ichidan' },
+            { jp: '開ける', cn: '打开', type: 'ichidan' },
+            { jp: '閉める', cn: '关闭', type: 'ichidan' },
+
+            // 五段动词
+            { jp: '行く', cn: '去', type: 'godan' },
+            { jp: '書く', cn: '写', type: 'godan' },
+            { jp: '読む', cn: '读', type: 'godan' },
+            { jp: '話す', cn: '说', type: 'godan' },
+            { jp: '聞く', cn: '听', type: 'godan' },
+            { jp: '買う', cn: '买', type: 'godan' },
+            { jp: '会う', cn: '见面', type: 'godan' },
+            { jp: '帰る', cn: '回去', type: 'godan' },
+            { jp: '待つ', cn: '等待', type: 'godan' },
+            { jp: '飲む', cn: '喝', type: 'godan' },
+            { jp: '遊ぶ', cn: '玩', type: 'godan' },
+            { jp: '死ぬ', cn: '死', type: 'godan' },
+
+            // 不规则动词
+            { jp: 'する', cn: '做', type: 'irregular' },
+            { jp: '来る', cn: '来', type: 'irregular' },
+            { jp: '勉強する', cn: '学习', type: 'irregular' },
+            { jp: '散歩する', cn: '散步', type: 'irregular' }
+        ];
+
+        // 获取动词的中文释义
+        function getVerbMeaning(verb) {
+            return verbDictionary[verb] || null;
+        }
+
+        // 初始化常用动词列表
+        function initVerbList() {
+            const verbList = document.getElementById('verbList');
+            commonVerbs.forEach(verb => {
+                const item = document.createElement('div');
+                item.className = 'verb-item';
+                item.innerHTML = `
+                    <div class="verb-jp">${verb.jp}</div>
+                    <div class="verb-cn">${verb.cn}</div>
+                `;
+                item.onclick = () => selectVerb(verb.jp, verb.type);
+                verbList.appendChild(item);
+            });
+        }
+
+        // 选择动词
+        function selectVerb(verb, type) {
+            document.getElementById('verbInput').value = verb;
+            selectedType = type;
+
+            // 更新按钮状态
+            document.querySelectorAll('.type-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.dataset.type === type) {
+                    btn.classList.add('active');
+                }
+            });
+
+            // 自动变形
+            conjugateVerb();
+        }
+
+        // 动词类型选择
+        document.querySelectorAll('.type-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                selectedType = this.dataset.type;
+            });
+        });
+
+        // 自动检测动词类型
+        function detectVerbType(verb) {
+            if (!verb) return null;
+
+            // 不规则动词检测
+            if (verb === 'する' || verb === '来る' || verb.endsWith('する')) {
+                return 'irregular';
+            }
+
+            // 必须以る结尾才可能是一段动词
+            if (!verb.endsWith('る')) {
+                return 'godan';
+            }
+
+            // 检查る前面的假名
+            if (verb.length >= 2) {
+                const beforeRu = verb.charAt(verb.length - 2);
+
+                // い段假名：い、き、ぎ、し、じ、ち、ぢ、に、ひ、び、ぴ、み、り
+                const iDan = ['い', 'き', 'ぎ', 'し', 'じ', 'ち', 'ぢ', 'に', 'ひ', 'び', 'ぴ', 'み', 'り'];
+
+                // え段假名：え、け、げ、せ、ぜ、て、で、ね、へ、べ、ぺ、め、れ
+                const eDan = ['え', 'け', 'げ', 'せ', 'ぜ', 'て', 'で', 'ね', 'へ', 'べ', 'ぺ', 'め', 'れ'];
+
+                // 常见的五段る动词（特殊情况）
+                const godanRuVerbs = ['帰る', '走る', '切る', '知る', '入る', '要る', '照る', '減る', '参る', '蹴る', '焦る', '滑る', '限る', '練る', '握る', '罵る'];
+
+                if (godanRuVerbs.includes(verb)) {
+                    return 'godan';
+                }
+
+                // 如果る前面是い段或え段，通常是一段动词
+                if (iDan.includes(beforeRu) || eDan.includes(beforeRu)) {
+                    return 'ichidan';
+                }
+            }
+
+            // 默认为五段动词
+            return 'godan';
+        }
+
+        // 输入框变化时自动检测类型
+        document.getElementById('verbInput').addEventListener('input', function() {
+            const verb = this.value.trim();
+            const detectedType = detectVerbType(verb);
+
+            if (detectedType) {
+                selectedType = detectedType;
+
+                // 更新按钮状态
+                document.querySelectorAll('.type-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                    if (btn.dataset.type === detectedType) {
+                        btn.classList.add('active');
+                    }
+                });
+            }
+        });
+
+        // 一段动词变形
+        function conjugateIchidan(verb) {
+            const stem = verb.slice(0, -1); // 去掉る
+
+            return {
+                masu: { jp: stem + 'ます', romaji: 'masu-kei', meaning: '礼貌形，用于正式场合' },
+                te: { jp: stem + 'て', romaji: 'te-kei', meaning: '连接形，表示"...然后"或请求' },
+                ta: { jp: stem + 'た', romaji: 'ta-kei', meaning: '过去形，表示过去的动作' },
+                nai: { jp: stem + 'ない', romaji: 'nai-kei', meaning: '否定形，表示"不..."' },
+                nakatta: { jp: stem + 'なかった', romaji: 'nakatta-kei', meaning: '过去否定形' },
+                ba: { jp: stem + 'れば', romaji: 'ba-kei', meaning: '假定形，表示"如果..."' },
+                potential: { jp: stem + 'られる', romaji: 'kanoukei', meaning: '可能形，表示"能够..."' },
+                volitional: { jp: stem + 'よう', romaji: 'ishikei', meaning: '意志形，表示"让我们..."' },
+                imperative: { jp: stem + 'ろ', romaji: 'meireikei', meaning: '命令形，表示命令' },
+                passive: { jp: stem + 'られる', romaji: 'ukemikei', meaning: '被动形，表示被动' },
+                causative: { jp: stem + 'させる', romaji: 'shiekikei', meaning: '使役形，表示"让...做"' }
+            };
+        }
+
+        // 五段动词变形
+        function conjugateGodan(verb) {
+            const lastChar = verb.slice(-1);
+            const stem = verb.slice(0, -1);
+
+            // 词尾对应关系
+            const conjugations = {
+                'う': { i: 'い', e: 'え', a: 'わ', o: 'お', te: 'って', ta: 'った' },
+                'く': { i: 'き', e: 'け', a: 'か', o: 'こ', te: 'いて', ta: 'いた' },
+                'ぐ': { i: 'ぎ', e: 'げ', a: 'が', o: 'ご', te: 'いで', ta: 'いだ' },
+                'す': { i: 'し', e: 'せ', a: 'さ', o: 'そ', te: 'して', ta: 'した' },
+                'つ': { i: 'ち', e: 'て', a: 'た', o: 'と', te: 'って', ta: 'った' },
+                'ぬ': { i: 'に', e: 'ね', a: 'な', o: 'の', te: 'んで', ta: 'んだ' },
+                'ぶ': { i: 'び', e: 'べ', a: 'ば', o: 'ぼ', te: 'んで', ta: 'んだ' },
+                'む': { i: 'み', e: 'め', a: 'ま', o: 'も', te: 'んで', ta: 'んだ' },
+                'る': { i: 'り', e: 'れ', a: 'ら', o: 'ろ', te: 'って', ta: 'った' }
+            };
+
+            const conj = conjugations[lastChar];
+
+            // 特殊处理：行く
+            if (verb === '行く') {
+                return {
+                    masu: { jp: '行きます', romaji: 'masu-kei', meaning: '礼貌形' },
+                    te: { jp: '行って', romaji: 'te-kei', meaning: '连接形' },
+                    ta: { jp: '行った', romaji: 'ta-kei', meaning: '过去形' },
+                    nai: { jp: '行かない', romaji: 'nai-kei', meaning: '否定形' },
+                    nakatta: { jp: '行かなかった', romaji: 'nakatta-kei', meaning: '过去否定形' },
+                    ba: { jp: '行けば', romaji: 'ba-kei', meaning: '假定形' },
+                    potential: { jp: '行ける', romaji: 'kanoukei', meaning: '可能形' },
+                    volitional: { jp: '行こう', romaji: 'ishikei', meaning: '意志形' },
+                    imperative: { jp: '行け', romaji: 'meireikei', meaning: '命令形' },
+                    passive: { jp: '行かれる', romaji: 'ukemikei', meaning: '被动形' },
+                    causative: { jp: '行かせる', romaji: 'shiekikei', meaning: '使役形' }
+                };
+            }
+
+            return {
+                masu: { jp: stem + conj.i + 'ます', romaji: 'masu-kei', meaning: '礼貌形，用于正式场合' },
+                te: { jp: stem + conj.te, romaji: 'te-kei', meaning: '连接形，表示"...然后"或请求' },
+                ta: { jp: stem + conj.ta, romaji: 'ta-kei', meaning: '过去形，表示过去的动作' },
+                nai: { jp: stem + conj.a + 'ない', romaji: 'nai-kei', meaning: '否定形，表示"不..."' },
+                nakatta: { jp: stem + conj.a + 'なかった', romaji: 'nakatta-kei', meaning: '过去否定形' },
+                ba: { jp: stem + conj.e + 'ば', romaji: 'ba-kei', meaning: '假定形，表示"如果..."' },
+                potential: { jp: stem + conj.e + 'る', romaji: 'kanoukei', meaning: '可能形，表示"能够..."' },
+                volitional: { jp: stem + conj.o + 'う', romaji: 'ishikei', meaning: '意志形，表示"让我们..."' },
+                imperative: { jp: stem + conj.e, romaji: 'meireikei', meaning: '命令形，表示命令' },
+                passive: { jp: stem + conj.a + 'れる', romaji: 'ukemikei', meaning: '被动形，表示被动' },
+                causative: { jp: stem + conj.a + 'せる', romaji: 'shiekikei', meaning: '使役形，表示"让...做"' }
+            };
+        }
+
+        // 不规则动词变形
+        function conjugateIrregular(verb) {
+            if (verb === 'する' || verb.endsWith('する')) {
+                const prefix = verb.slice(0, -2);
+                return {
+                    masu: { jp: prefix + 'します', romaji: 'masu-kei', meaning: '礼貌形' },
+                    te: { jp: prefix + 'して', romaji: 'te-kei', meaning: '连接形' },
+                    ta: { jp: prefix + 'した', romaji: 'ta-kei', meaning: '过去形' },
+                    nai: { jp: prefix + 'しない', romaji: 'nai-kei', meaning: '否定形' },
+                    nakatta: { jp: prefix + 'しなかった', romaji: 'nakatta-kei', meaning: '过去否定形' },
+                    ba: { jp: prefix + 'すれば', romaji: 'ba-kei', meaning: '假定形' },
+                    potential: { jp: prefix + 'できる', romaji: 'kanoukei', meaning: '可能形' },
+                    volitional: { jp: prefix + 'しよう', romaji: 'ishikei', meaning: '意志形' },
+                    imperative: { jp: prefix + 'しろ', romaji: 'meireikei', meaning: '命令形' },
+                    passive: { jp: prefix + 'される', romaji: 'ukemikei', meaning: '被动形' },
+                    causative: { jp: prefix + 'させる', romaji: 'shiekikei', meaning: '使役形' }
+                };
+            } else if (verb === '来る') {
+                return {
+                    masu: { jp: '来ます', romaji: 'kimasu', meaning: '礼貌形' },
+                    te: { jp: '来て', romaji: 'kite', meaning: '连接形' },
+                    ta: { jp: '来た', romaji: 'kita', meaning: '过去形' },
+                    nai: { jp: '来ない', romaji: 'konai', meaning: '否定形' },
+                    nakatta: { jp: '来なかった', romaji: 'konakatta', meaning: '过去否定形' },
+                    ba: { jp: '来れば', romaji: 'kureba', meaning: '假定形' },
+                    potential: { jp: '来られる', romaji: 'korareru', meaning: '可能形' },
+                    volitional: { jp: '来よう', romaji: 'koyou', meaning: '意志形' },
+                    imperative: { jp: '来い', romaji: 'koi', meaning: '命令形' },
+                    passive: { jp: '来られる', romaji: 'korareru', meaning: '被动形' },
+                    causative: { jp: '来させる', romaji: 'kosaseru', meaning: '使役形' }
+                };
+            }
+        }
+
+        // 获取规则说明
+        function getRules(type) {
+            const rules = {
+                ichidan: `
+                    <h3>一段动词变形规则</h3>
+                    <ul>
+                        <li>特征：词尾为「る」，且る前面是「い」或「え」段假名</li>
+                        <li>变形方法：去掉「る」，加上相应的词尾</li>
+                        <li>例如：食べる → 食べ（词干）+ ます/て/た等</li>
+                    </ul>
+                `,
+                godan: `
+                    <h3>五段动词变形规则</h3>
+                    <ul>
+                        <li>特征：词尾为う段假名（う/く/ぐ/す/つ/ぬ/ぶ/む/る）</li>
+                        <li>变形方法：词尾按照五十音图的段进行变化</li>
+                        <li>例如：書く → 書き（い段）/書い（い段+て/た）等</li>
+                        <li>特殊：行く的て形和た形是「行って」「行った」</li>
+                    </ul>
+                `,
+                irregular: `
+                    <h3>不规则动词变形规则</h3>
+                    <ul>
+                        <li>する：做、进行（サ変动词）</li>
+                        <li>来る（くる）：来（カ変动词）</li>
+                        <li>复合动词：如「勉強する」「散歩する」等，する部分按する变形</li>
+                        <li>这两个动词需要特别记忆其变形</li>
+                    </ul>
+                `
+            };
+            return rules[type] || '';
+        }
+
+        // 主变形函数
+        function conjugateVerb() {
+            const verb = document.getElementById('verbInput').value.trim();
+
+            if (!verb) {
+                alert('请输入动词！');
+                return;
+            }
+
+            if (!selectedType) {
+                alert('请选择动词类型！');
+                return;
+            }
+
+            let conjugations;
+
+            switch(selectedType) {
+                case 'ichidan':
+                    if (!verb.endsWith('る')) {
+                        alert('一段动词必须以「る」结尾！');
+                        return;
+                    }
+                    conjugations = conjugateIchidan(verb);
+                    break;
+                case 'godan':
+                    conjugations = conjugateGodan(verb);
+                    break;
+                case 'irregular':
+                    conjugations = conjugateIrregular(verb);
+                    break;
+            }
+
+            displayResults(verb, conjugations, selectedType);
+        }
+
+        // 显示结果
+        function displayResults(verb, conjugations, type) {
+            const resultGrid = document.getElementById('resultGrid');
+            const rulesSection = document.getElementById('rulesSection');
+            const results = document.getElementById('results');
+
+            // 获取动词的中文意思
+            const meaning = getVerbMeaning(verb);
+            const verbTitle = meaning ? `${verb}（${meaning}）` : verb;
+
+            // 显示规则，包含动词及其中文意思
+            let rulesHTML = `<h3 style="color: #333; font-size: 1.3em; margin-bottom: 15px;">动词：${verbTitle}</h3>`;
+            rulesHTML += getRules(type);
+            rulesSection.innerHTML = rulesHTML;
+
+            // 显示变形结果
+            resultGrid.innerHTML = '';
+
+            const formNames = {
+                masu: 'ます形',
+                te: 'て形',
+                ta: 'た形（过去形）',
+                nai: 'ない形（否定形）',
+                nakatta: 'なかった形',
+                ba: 'ば形（假定形）',
+                potential: '可能形',
+                volitional: '意志形',
+                imperative: '命令形',
+                passive: '被动形',
+                causative: '使役形'
+            };
+
+            Object.keys(conjugations).forEach(key => {
+                const form = conjugations[key];
+                const card = document.createElement('div');
+                card.className = 'result-card';
+                card.innerHTML = `
+                    <h3>${formNames[key]}</h3>
+                    <div class="japanese">${form.jp}</div>
+                    <div class="hiragana-reading" style="font-size: 1.3em; color: #667eea; margin: 8px 0; font-weight: 500;">
+                        ひらがな：${form.jp}
+                    </div>
+                    <div class="romaji">${form.romaji}</div>
+                    <div class="explanation">${form.meaning}</div>
+                    <button class="speak-btn" onclick="speakText('${form.jp}')">🔊 发音</button>
+                `;
+                resultGrid.appendChild(card);
+            });
+
+            results.classList.add('show');
+            results.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        // 回车键触发
+        document.getElementById('verbInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                conjugateVerb();
+            }
+        });
+
+        // 发音功能 - 优化版本，尽量自然的日语发音
+        let availableVoices = [];
+
+        // 加载可用语音列表
+        function loadVoices() {
+            availableVoices = window.speechSynthesis.getVoices();
+        }
+
+        if ('speechSynthesis' in window) {
+            loadVoices();
+            window.speechSynthesis.onvoiceschanged = loadVoices;
+        }
+
+        function speakText(text) {
+            if ('speechSynthesis' in window) {
+                // 取消当前正在进行的语音
+                window.speechSynthesis.cancel();
+
+                const utterance = new SpeechSynthesisUtterance(text);
+
+                // 智能选择最佳日语语音
+                // 优先级：1.原生女声 2.原生语音 3.任何日语语音
+                const japaneseVoice = availableVoices.find(voice =>
+                    voice.lang === 'ja-JP' && voice.localService && voice.name.includes('Kyoko')
+                ) || availableVoices.find(voice =>
+                    voice.lang === 'ja-JP' && voice.localService
+                ) || availableVoices.find(voice =>
+                    (voice.lang === 'ja-JP' || voice.lang.startsWith('ja')) &&
+                    (voice.name.includes('Female') || voice.name.includes('Kyoko') || voice.name.includes('Otoya'))
+                ) || availableVoices.find(voice =>
+                    voice.lang === 'ja-JP' || voice.lang.startsWith('ja')
+                );
+
+                if (japaneseVoice) {
+                    utterance.voice = japaneseVoice;
+                    console.log('使用语音：' + japaneseVoice.name);
+                }
+
+                utterance.lang = 'ja-JP';
+                utterance.rate = 0.9;   // 接近正常语速
+                utterance.pitch = 1.1;  // 稍高音调，更温柔
+                utterance.volume = 1.0;
+
+                window.speechSynthesis.speak(utterance);
+            } else {
+                alert('您的浏览器不支持语音合成功能');
+            }
+        }
+
+        // 模式切换
+        let currentMode = 'learn';
+
+        function switchMode(mode) {
+            currentMode = mode;
+
+            // 更新按钮状态
+            document.querySelectorAll('.mode-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            // 切换显示的内容
+            if (mode === 'learn') {
+                document.getElementById('learnMode').style.display = 'block';
+                document.getElementById('practiceMode').classList.remove('show');
+            } else {
+                document.getElementById('learnMode').style.display = 'none';
+                document.getElementById('practiceMode').classList.add('show');
+                initPractice();
+            }
+        }
+
+        // 练习模式相关变量
+        let currentQuiz = null;
+        let correctCount = 0;
+        let wrongCount = 0;
+        let totalCount = 0;
+        let hasAnswered = false;
+
+        // 所有变形类型
+        const formTypes = ['masu', 'te', 'ta', 'nai', 'nakatta', 'ba', 'potential', 'volitional', 'imperative', 'passive', 'causative'];
+        const formNamesForQuiz = {
+            masu: 'ます形',
+            te: 'て形',
+            ta: 'た形',
+            nai: 'ない形',
+            nakatta: 'なかった形',
+            ba: 'ば形',
+            potential: '可能形',
+            volitional: '意志形',
+            imperative: '命令形',
+            passive: '被动形',
+            causative: '使役形'
+        };
+
+        // 初始化练习模式
+        function initPractice() {
+            correctCount = 0;
+            wrongCount = 0;
+            totalCount = 0;
+            updateScore();
+            generateQuestion();
+        }
+
+        // 生成题目
+        function generateQuestion() {
+            hasAnswered = false;
+            document.getElementById('feedback').innerHTML = '';
+            document.getElementById('nextBtn').style.display = 'none';
+            document.getElementById('quizInput').value = '';
+            document.getElementById('quizInput').disabled = false;
+
+            // 随机选择一个动词
+            const verb = commonVerbs[Math.floor(Math.random() * commonVerbs.length)];
+
+            // 随机选择一个变形类型
+            const formType = formTypes[Math.floor(Math.random() * formTypes.length)];
+
+            // 生成正确答案
+            let conjugations;
+            switch(verb.type) {
+                case 'ichidan':
+                    conjugations = conjugateIchidan(verb.jp);
+                    break;
+                case 'godan':
+                    conjugations = conjugateGodan(verb.jp);
+                    break;
+                case 'irregular':
+                    conjugations = conjugateIrregular(verb.jp);
+                    break;
+            }
+
+            currentQuiz = {
+                verb: verb.jp,
+                meaning: verb.cn,
+                formType: formType,
+                answer: conjugations[formType].jp
+            };
+
+            // 显示题目
+            document.getElementById('quizQuestion').textContent = currentQuiz.verb;
+            document.getElementById('quizHint').textContent = `${currentQuiz.meaning} - 请写出${formNamesForQuiz[formType]}`;
+        }
+
+        // 检查答案
+        function checkAnswer() {
+            if (hasAnswered) return;
+
+            const userAnswer = document.getElementById('quizInput').value.trim();
+            const feedback = document.getElementById('feedback');
+
+            if (!userAnswer) {
+                alert('请输入答案！');
+                return;
+            }
+
+            hasAnswered = true;
+            totalCount++;
+            document.getElementById('quizInput').disabled = true;
+
+            if (userAnswer === currentQuiz.answer) {
+                correctCount++;
+                feedback.className = 'feedback correct';
+                feedback.innerHTML = `
+                    ✓ 正确！
+                    <div style="margin-top: 10px; font-size: 1.2em; color: #155724;">
+                        ✨ ${currentQuiz.answer}
+                    </div>
+                `;
+                speakText(currentQuiz.answer);
+            } else {
+                wrongCount++;
+                feedback.className = 'feedback incorrect';
+                feedback.innerHTML = `
+                    ✗ 错误
+                    <div class="answer-display">
+                        <strong>正确答案：</strong>${currentQuiz.answer}
+                        <div style="margin-top: 8px; color: #f57c00; font-size: 1.1em;">
+                            ひらがな：${currentQuiz.answer}
+                        </div>
+                    </div>
+                `;
+            }
+
+            updateScore();
+            document.getElementById('nextBtn').style.display = 'inline-block';
+        }
+
+        // 跳过题目
+        function skipQuestion() {
+            if (hasAnswered) return;
+
+            hasAnswered = true;
+            totalCount++;
+            wrongCount++;
+
+            const feedback = document.getElementById('feedback');
+            feedback.className = 'feedback incorrect';
+            feedback.innerHTML = `
+                已跳过
+                <div class="answer-display">
+                    <strong>正确答案：</strong>${currentQuiz.answer}
+                    <div style="margin-top: 8px; color: #f57c00; font-size: 1.1em;">
+                        ひらがな：${currentQuiz.answer}
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('quizInput').disabled = true;
+            updateScore();
+            document.getElementById('nextBtn').style.display = 'inline-block';
+        }
+
+        // 下一题
+        function nextQuestion() {
+            generateQuestion();
+        }
+
+        // 更新分数
+        function updateScore() {
+            document.getElementById('correctCount').textContent = correctCount;
+            document.getElementById('wrongCount').textContent = wrongCount;
+            document.getElementById('totalCount').textContent = totalCount;
+        }
+
+        // 练习模式回车键提交
+        document.getElementById('quizInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                if (!hasAnswered) {
+                    checkAnswer();
+                } else {
+                    nextQuestion();
+                }
+            }
+        });
+
+        // 显示帮助弹窗
+        function showHelp() {
+            document.getElementById('helpModal').classList.add('show');
+        }
+
+        // 关闭帮助弹窗
+        function closeHelp(event) {
+            if (!event || event.target === document.getElementById('helpModal')) {
+                document.getElementById('helpModal').classList.remove('show');
+            }
+        }
+
+        // ESC键关闭弹窗
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeHelp();
+            }
+        });
+
+        // 初始化
+        initVerbList();
+    </script>
+</body>
+</html>
