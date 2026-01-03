@@ -32,3 +32,6 @@ Desktop.ini
 .idea/
 *.sublime-project
 *.sublime-workspace
+
+# Backup files
+index_backup_*.html

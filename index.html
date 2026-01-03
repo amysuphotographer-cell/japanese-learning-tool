@@ -719,110 +719,110 @@
     <script>
         let selectedType = '';
 
-        // 动词词典（包含中文释义）
+        // 动词词典（包含中文释义和假名读音）
         const verbDictionary = {
             // 一段动词
-            '食べる': '吃',
-            '見る': '看',
-            '起きる': '起床',
-            '寝る': '睡觉',
-            '教える': '教',
-            '着る': '穿',
-            '開ける': '打开',
-            '閉める': '关闭',
-            '考える': '考虑',
-            '答える': '回答',
-            '忘れる': '忘记',
-            '覚える': '记住',
-            '出る': '出去',
-            '入れる': '放入',
-            '捨てる': '扔掉',
-            '疲れる': '疲劳',
-            '晴れる': '晴天',
-            '生きる': '活着',
-            '借りる': '借',
-            '降りる': '下车',
-            '浴びる': '淋浴',
-            '信じる': '相信',
+            '食べる': { meaning: '吃', hiragana: 'たべる' },
+            '見る': { meaning: '看', hiragana: 'みる' },
+            '起きる': { meaning: '起床', hiragana: 'おきる' },
+            '寝る': { meaning: '睡觉', hiragana: 'ねる' },
+            '教える': { meaning: '教', hiragana: 'おしえる' },
+            '着る': { meaning: '穿', hiragana: 'きる' },
+            '開ける': { meaning: '打开', hiragana: 'あける' },
+            '閉める': { meaning: '关闭', hiragana: 'しめる' },
+            '考える': { meaning: '考虑', hiragana: 'かんがえる' },
+            '答える': { meaning: '回答', hiragana: 'こたえる' },
+            '忘れる': { meaning: '忘记', hiragana: 'わすれる' },
+            '覚える': { meaning: '记住', hiragana: 'おぼえる' },
+            '出る': { meaning: '出去', hiragana: 'でる' },
+            '入れる': { meaning: '放入', hiragana: 'いれる' },
+            '捨てる': { meaning: '扔掉', hiragana: 'すてる' },
+            '疲れる': { meaning: '疲劳', hiragana: 'つかれる' },
+            '晴れる': { meaning: '晴天', hiragana: 'はれる' },
+            '生きる': { meaning: '活着', hiragana: 'いきる' },
+            '借りる': { meaning: '借', hiragana: 'かりる' },
+            '降りる': { meaning: '下车', hiragana: 'おりる' },
+            '浴びる': { meaning: '淋浴', hiragana: 'あびる' },
+            '信じる': { meaning: '相信', hiragana: 'しんじる' },
 
             // 五段动词
-            '行く': '去',
-            '書く': '写',
-            '読む': '读',
-            '話す': '说',
-            '聞く': '听',
-            '買う': '买',
-            '会う': '见面',
-            '帰る': '回去',
-            '待つ': '等待',
-            '飲む': '喝',
-            '遊ぶ': '玩',
-            '死ぬ': '死',
-            '立つ': '站',
-            '座る': '坐',
-            '売る': '卖',
-            '作る': '制作',
-            '取る': '拿',
-            '歩く': '走路',
-            '泳ぐ': '游泳',
-            '急ぐ': '着急',
-            '呼ぶ': '叫',
-            '休む': '休息',
-            '住む': '居住',
-            '吸う': '吸',
-            '洗う': '洗',
-            '使う': '使用',
-            '歌う': '唱歌',
-            '笑う': '笑',
-            '持つ': '持有',
-            '勝つ': '赢',
-            '消す': '关闭/熄灭',
-            '貸す': '借出',
-            '出す': '拿出',
-            '返す': '归还',
-            '渡す': '交给',
-            '押す': '按',
-            '走る': '跑',
-            '切る': '切',
-            '知る': '知道',
-            '入る': '进入',
-            '要る': '需要',
-            '乗る': '乘坐',
-            '降る': '下雨/下雪',
-            '撮る': '拍摄',
-            '分かる': '明白',
-            '始まる': '开始',
-            '終わる': '结束',
-            '頑張る': '加油',
-            '働く': '工作',
-            '動く': '移动',
-            '置く': '放置',
-            '咲く': '开花',
-            '弾く': '弹奏',
-            '鳴く': '鸣叫',
-            '泣く': '哭',
-            '開く': '打开',
-            '引く': '拉',
+            '行く': { meaning: '去', hiragana: 'いく' },
+            '書く': { meaning: '写', hiragana: 'かく' },
+            '読む': { meaning: '读', hiragana: 'よむ' },
+            '話す': { meaning: '说', hiragana: 'はなす' },
+            '聞く': { meaning: '听', hiragana: 'きく' },
+            '買う': { meaning: '买', hiragana: 'かう' },
+            '会う': { meaning: '见面', hiragana: 'あう' },
+            '帰る': { meaning: '回去', hiragana: 'かえる' },
+            '待つ': { meaning: '等待', hiragana: 'まつ' },
+            '飲む': { meaning: '喝', hiragana: 'のむ' },
+            '遊ぶ': { meaning: '玩', hiragana: 'あそぶ' },
+            '死ぬ': { meaning: '死', hiragana: 'しぬ' },
+            '立つ': { meaning: '站', hiragana: 'たつ' },
+            '座る': { meaning: '坐', hiragana: 'すわる' },
+            '売る': { meaning: '卖', hiragana: 'うる' },
+            '作る': { meaning: '制作', hiragana: 'つくる' },
+            '取る': { meaning: '拿', hiragana: 'とる' },
+            '歩く': { meaning: '走路', hiragana: 'あるく' },
+            '泳ぐ': { meaning: '游泳', hiragana: 'およぐ' },
+            '急ぐ': { meaning: '着急', hiragana: 'いそぐ' },
+            '呼ぶ': { meaning: '叫', hiragana: 'よぶ' },
+            '休む': { meaning: '休息', hiragana: 'やすむ' },
+            '住む': { meaning: '居住', hiragana: 'すむ' },
+            '吸う': { meaning: '吸', hiragana: 'すう' },
+            '洗う': { meaning: '洗', hiragana: 'あらう' },
+            '使う': { meaning: '使用', hiragana: 'つかう' },
+            '歌う': { meaning: '唱歌', hiragana: 'うたう' },
+            '笑う': { meaning: '笑', hiragana: 'わらう' },
+            '持つ': { meaning: '持有', hiragana: 'もつ' },
+            '勝つ': { meaning: '赢', hiragana: 'かつ' },
+            '消す': { meaning: '关闭/熄灭', hiragana: 'けす' },
+            '貸す': { meaning: '借出', hiragana: 'かす' },
+            '出す': { meaning: '拿出', hiragana: 'だす' },
+            '返す': { meaning: '归还', hiragana: 'かえす' },
+            '渡す': { meaning: '交给', hiragana: 'わたす' },
+            '押す': { meaning: '按', hiragana: 'おす' },
+            '走る': { meaning: '跑', hiragana: 'はしる' },
+            '切る': { meaning: '切', hiragana: 'きる' },
+            '知る': { meaning: '知道', hiragana: 'しる' },
+            '入る': { meaning: '进入', hiragana: 'はいる' },
+            '要る': { meaning: '需要', hiragana: 'いる' },
+            '乗る': { meaning: '乘坐', hiragana: 'のる' },
+            '降る': { meaning: '下雨/下雪', hiragana: 'ふる' },
+            '撮る': { meaning: '拍摄', hiragana: 'とる' },
+            '分かる': { meaning: '明白', hiragana: 'わかる' },
+            '始まる': { meaning: '开始', hiragana: 'はじまる' },
+            '終わる': { meaning: '结束', hiragana: 'おわる' },
+            '頑張る': { meaning: '加油', hiragana: 'がんばる' },
+            '働く': { meaning: '工作', hiragana: 'はたらく' },
+            '動く': { meaning: '移动', hiragana: 'うごく' },
+            '置く': { meaning: '放置', hiragana: 'おく' },
+            '咲く': { meaning: '开花', hiragana: 'さく' },
+            '弾く': { meaning: '弹奏', hiragana: 'ひく' },
+            '鳴く': { meaning: '鸣叫', hiragana: 'なく' },
+            '泣く': { meaning: '哭', hiragana: 'なく' },
+            '開く': { meaning: '打开', hiragana: 'ひらく' },
+            '引く': { meaning: '拉', hiragana: 'ひく' },
 
             // 不规则动词
-            'する': '做',
-            '来る': '来',
-            '勉強する': '学习',
-            '散歩する': '散步',
-            '料理する': '做菜',
-            '掃除する': '打扫',
-            '洗濯する': '洗衣服',
-            '買い物する': '购物',
-            '運転する': '开车',
-            '電話する': '打电话',
-            '結婚する': '结婚',
-            '仕事する': '工作',
-            '旅行する': '旅行',
-            '予約する': '预约',
-            '紹介する': '介绍',
-            '説明する': '说明',
-            '準備する': '准备',
-            '練習する': '练习'
+            'する': { meaning: '做', hiragana: 'する' },
+            '来る': { meaning: '来', hiragana: 'くる' },
+            '勉強する': { meaning: '学习', hiragana: 'べんきょうする' },
+            '散歩する': { meaning: '散步', hiragana: 'さんぽする' },
+            '料理する': { meaning: '做菜', hiragana: 'りょうりする' },
+            '掃除する': { meaning: '打扫', hiragana: 'そうじする' },
+            '洗濯する': { meaning: '洗衣服', hiragana: 'せんたくする' },
+            '買い物する': { meaning: '购物', hiragana: 'かいものする' },
+            '運転する': { meaning: '开车', hiragana: 'うんてんする' },
+            '電話する': { meaning: '打电话', hiragana: 'でんわする' },
+            '結婚する': { meaning: '结婚', hiragana: 'けっこんする' },
+            '仕事する': { meaning: '工作', hiragana: 'しごとする' },
+            '旅行する': { meaning: '旅行', hiragana: 'りょこうする' },
+            '予約する': { meaning: '预约', hiragana: 'よやくする' },
+            '紹介する': { meaning: '介绍', hiragana: 'しょうかいする' },
+            '説明する': { meaning: '说明', hiragana: 'せつめいする' },
+            '準備する': { meaning: '准备', hiragana: 'じゅんびする' },
+            '練習する': { meaning: '练习', hiragana: 'れんしゅうする' }
         };
 
         // 常用动词列表
@@ -858,9 +858,21 @@
             { jp: '散歩する', cn: '散步', type: 'irregular' }
         ];
 
-        // 获取动词的中文释义
-        function getVerbMeaning(verb) {
+        // 获取动词信息（中文释义和假名读音）
+        function getVerbInfo(verb) {
             return verbDictionary[verb] || null;
+        }
+
+        // 获取动词的中文释义（兼容旧代码）
+        function getVerbMeaning(verb) {
+            const info = verbDictionary[verb];
+            return info ? info.meaning : null;
+        }
+
+        // 获取动词的假名读音
+        function getVerbHiragana(verb) {
+            const info = verbDictionary[verb];
+            return info ? info.hiragana : verb; // 如果没有假名数据，返回原词
         }
 
         // 初始化常用动词列表
@@ -966,19 +978,21 @@
         // 一段动词变形
         function conjugateIchidan(verb) {
             const stem = verb.slice(0, -1); // 去掉る
+            const hiraganaVerb = getVerbHiragana(verb);
+            const hiraganaStem = hiraganaVerb.slice(0, -1); // 去掉假名的る
 
             return {
-                masu: { jp: stem + 'ます', romaji: 'masu-kei', meaning: '礼貌形，用于正式场合' },
-                te: { jp: stem + 'て', romaji: 'te-kei', meaning: '连接形，表示"...然后"或请求' },
-                ta: { jp: stem + 'た', romaji: 'ta-kei', meaning: '过去形，表示过去的动作' },
-                nai: { jp: stem + 'ない', romaji: 'nai-kei', meaning: '否定形，表示"不..."' },
-                nakatta: { jp: stem + 'なかった', romaji: 'nakatta-kei', meaning: '过去否定形' },
-                ba: { jp: stem + 'れば', romaji: 'ba-kei', meaning: '假定形，表示"如果..."' },
-                potential: { jp: stem + 'られる', romaji: 'kanoukei', meaning: '可能形，表示"能够..."' },
-                volitional: { jp: stem + 'よう', romaji: 'ishikei', meaning: '意志形，表示"让我们..."' },
-                imperative: { jp: stem + 'ろ', romaji: 'meireikei', meaning: '命令形，表示命令' },
-                passive: { jp: stem + 'られる', romaji: 'ukemikei', meaning: '被动形，表示被动' },
-                causative: { jp: stem + 'させる', romaji: 'shiekikei', meaning: '使役形，表示"让...做"' }
+                masu: { jp: stem + 'ます', hiragana: hiraganaStem + 'ます', romaji: 'masu-kei', meaning: '礼貌形，用于正式场合' },
+                te: { jp: stem + 'て', hiragana: hiraganaStem + 'て', romaji: 'te-kei', meaning: '连接形，表示"...然后"或请求' },
+                ta: { jp: stem + 'た', hiragana: hiraganaStem + 'た', romaji: 'ta-kei', meaning: '过去形，表示过去的动作' },
+                nai: { jp: stem + 'ない', hiragana: hiraganaStem + 'ない', romaji: 'nai-kei', meaning: '否定形，表示"不..."' },
+                nakatta: { jp: stem + 'なかった', hiragana: hiraganaStem + 'なかった', romaji: 'nakatta-kei', meaning: '过去否定形' },
+                ba: { jp: stem + 'れば', hiragana: hiraganaStem + 'れば', romaji: 'ba-kei', meaning: '假定形，表示"如果..."' },
+                potential: { jp: stem + 'られる', hiragana: hiraganaStem + 'られる', romaji: 'kanoukei', meaning: '可能形，表示"能够..."' },
+                volitional: { jp: stem + 'よう', hiragana: hiraganaStem + 'よう', romaji: 'ishikei', meaning: '意志形，表示"让我们..."' },
+                imperative: { jp: stem + 'ろ', hiragana: hiraganaStem + 'ろ', romaji: 'meireikei', meaning: '命令形，表示命令' },
+                passive: { jp: stem + 'られる', hiragana: hiraganaStem + 'られる', romaji: 'ukemikei', meaning: '被动形，表示被动' },
+                causative: { jp: stem + 'させる', hiragana: hiraganaStem + 'させる', romaji: 'shiekikei', meaning: '使役形，表示"让...做"' }
             };
         }
 
@@ -986,6 +1000,10 @@
         function conjugateGodan(verb) {
             const lastChar = verb.slice(-1);
             const stem = verb.slice(0, -1);
+
+            const hiraganaVerb = getVerbHiragana(verb);
+            const hiraganaLastChar = hiraganaVerb.slice(-1);
+            const hiraganaStem = hiraganaVerb.slice(0, -1);
 
             // 词尾对应关系
             const conjugations = {
@@ -1000,37 +1018,37 @@
                 'る': { i: 'り', e: 'れ', a: 'ら', o: 'ろ', te: 'って', ta: 'った' }
             };
 
-            const conj = conjugations[lastChar];
+            const conj = conjugations[hiraganaLastChar];
 
             // 特殊处理：行く
             if (verb === '行く') {
                 return {
-                    masu: { jp: '行きます', romaji: 'masu-kei', meaning: '礼貌形' },
-                    te: { jp: '行って', romaji: 'te-kei', meaning: '连接形' },
-                    ta: { jp: '行った', romaji: 'ta-kei', meaning: '过去形' },
-                    nai: { jp: '行かない', romaji: 'nai-kei', meaning: '否定形' },
-                    nakatta: { jp: '行かなかった', romaji: 'nakatta-kei', meaning: '过去否定形' },
-                    ba: { jp: '行けば', romaji: 'ba-kei', meaning: '假定形' },
-                    potential: { jp: '行ける', romaji: 'kanoukei', meaning: '可能形' },
-                    volitional: { jp: '行こう', romaji: 'ishikei', meaning: '意志形' },
-                    imperative: { jp: '行け', romaji: 'meireikei', meaning: '命令形' },
-                    passive: { jp: '行かれる', romaji: 'ukemikei', meaning: '被动形' },
-                    causative: { jp: '行かせる', romaji: 'shiekikei', meaning: '使役形' }
+                    masu: { jp: '行きます', hiragana: 'いきます', romaji: 'masu-kei', meaning: '礼貌形' },
+                    te: { jp: '行って', hiragana: 'いって', romaji: 'te-kei', meaning: '连接形' },
+                    ta: { jp: '行った', hiragana: 'いった', romaji: 'ta-kei', meaning: '过去形' },
+                    nai: { jp: '行かない', hiragana: 'いかない', romaji: 'nai-kei', meaning: '否定形' },
+                    nakatta: { jp: '行かなかった', hiragana: 'いかなかった', romaji: 'nakatta-kei', meaning: '过去否定形' },
+                    ba: { jp: '行けば', hiragana: 'いけば', romaji: 'ba-kei', meaning: '假定形' },
+                    potential: { jp: '行ける', hiragana: 'いける', romaji: 'kanoukei', meaning: '可能形' },
+                    volitional: { jp: '行こう', hiragana: 'いこう', romaji: 'ishikei', meaning: '意志形' },
+                    imperative: { jp: '行け', hiragana: 'いけ', romaji: 'meireikei', meaning: '命令形' },
+                    passive: { jp: '行かれる', hiragana: 'いかれる', romaji: 'ukemikei', meaning: '被动形' },
+                    causative: { jp: '行かせる', hiragana: 'いかせる', romaji: 'shiekikei', meaning: '使役形' }
                 };
             }
 
             return {
-                masu: { jp: stem + conj.i + 'ます', romaji: 'masu-kei', meaning: '礼貌形，用于正式场合' },
-                te: { jp: stem + conj.te, romaji: 'te-kei', meaning: '连接形，表示"...然后"或请求' },
-                ta: { jp: stem + conj.ta, romaji: 'ta-kei', meaning: '过去形，表示过去的动作' },
-                nai: { jp: stem + conj.a + 'ない', romaji: 'nai-kei', meaning: '否定形，表示"不..."' },
-                nakatta: { jp: stem + conj.a + 'なかった', romaji: 'nakatta-kei', meaning: '过去否定形' },
-                ba: { jp: stem + conj.e + 'ば', romaji: 'ba-kei', meaning: '假定形，表示"如果..."' },
-                potential: { jp: stem + conj.e + 'る', romaji: 'kanoukei', meaning: '可能形，表示"能够..."' },
-                volitional: { jp: stem + conj.o + 'う', romaji: 'ishikei', meaning: '意志形，表示"让我们..."' },
-                imperative: { jp: stem + conj.e, romaji: 'meireikei', meaning: '命令形，表示命令' },
-                passive: { jp: stem + conj.a + 'れる', romaji: 'ukemikei', meaning: '被动形，表示被动' },
-                causative: { jp: stem + conj.a + 'せる', romaji: 'shiekikei', meaning: '使役形，表示"让...做"' }
+                masu: { jp: stem + conj.i + 'ます', hiragana: hiraganaStem + conj.i + 'ます', romaji: 'masu-kei', meaning: '礼貌形，用于正式场合' },
+                te: { jp: stem + conj.te, hiragana: hiraganaStem + conj.te, romaji: 'te-kei', meaning: '连接形，表示"...然后"或请求' },
+                ta: { jp: stem + conj.ta, hiragana: hiraganaStem + conj.ta, romaji: 'ta-kei', meaning: '过去形，表示过去的动作' },
+                nai: { jp: stem + conj.a + 'ない', hiragana: hiraganaStem + conj.a + 'ない', romaji: 'nai-kei', meaning: '否定形，表示"不..."' },
+                nakatta: { jp: stem + conj.a + 'なかった', hiragana: hiraganaStem + conj.a + 'なかった', romaji: 'nakatta-kei', meaning: '过去否定形' },
+                ba: { jp: stem + conj.e + 'ば', hiragana: hiraganaStem + conj.e + 'ば', romaji: 'ba-kei', meaning: '假定形，表示"如果..."' },
+                potential: { jp: stem + conj.e + 'る', hiragana: hiraganaStem + conj.e + 'る', romaji: 'kanoukei', meaning: '可能形，表示"能够..."' },
+                volitional: { jp: stem + conj.o + 'う', hiragana: hiraganaStem + conj.o + 'う', romaji: 'ishikei', meaning: '意志形，表示"让我们..."' },
+                imperative: { jp: stem + conj.e, hiragana: hiraganaStem + conj.e, romaji: 'meireikei', meaning: '命令形，表示命令' },
+                passive: { jp: stem + conj.a + 'れる', hiragana: hiraganaStem + conj.a + 'れる', romaji: 'ukemikei', meaning: '被动形，表示被动' },
+                causative: { jp: stem + conj.a + 'せる', hiragana: hiraganaStem + conj.a + 'せる', romaji: 'shiekikei', meaning: '使役形，表示"让...做"' }
             };
         }
 
@@ -1038,32 +1056,35 @@
         function conjugateIrregular(verb) {
             if (verb === 'する' || verb.endsWith('する')) {
                 const prefix = verb.slice(0, -2);
+                const hiraganaVerb = getVerbHiragana(verb);
+                const hiraganaPrefix = hiraganaVerb.slice(0, -2);
+
                 return {
-                    masu: { jp: prefix + 'します', romaji: 'masu-kei', meaning: '礼貌形' },
-                    te: { jp: prefix + 'して', romaji: 'te-kei', meaning: '连接形' },
-                    ta: { jp: prefix + 'した', romaji: 'ta-kei', meaning: '过去形' },
-                    nai: { jp: prefix + 'しない', romaji: 'nai-kei', meaning: '否定形' },
-                    nakatta: { jp: prefix + 'しなかった', romaji: 'nakatta-kei', meaning: '过去否定形' },
-                    ba: { jp: prefix + 'すれば', romaji: 'ba-kei', meaning: '假定形' },
-                    potential: { jp: prefix + 'できる', romaji: 'kanoukei', meaning: '可能形' },
-                    volitional: { jp: prefix + 'しよう', romaji: 'ishikei', meaning: '意志形' },
-                    imperative: { jp: prefix + 'しろ', romaji: 'meireikei', meaning: '命令形' },
-                    passive: { jp: prefix + 'される', romaji: 'ukemikei', meaning: '被动形' },
-                    causative: { jp: prefix + 'させる', romaji: 'shiekikei', meaning: '使役形' }
+                    masu: { jp: prefix + 'します', hiragana: hiraganaPrefix + 'します', romaji: 'masu-kei', meaning: '礼貌形' },
+                    te: { jp: prefix + 'して', hiragana: hiraganaPrefix + 'して', romaji: 'te-kei', meaning: '连接形' },
+                    ta: { jp: prefix + 'した', hiragana: hiraganaPrefix + 'した', romaji: 'ta-kei', meaning: '过去形' },
+                    nai: { jp: prefix + 'しない', hiragana: hiraganaPrefix + 'しない', romaji: 'nai-kei', meaning: '否定形' },
+                    nakatta: { jp: prefix + 'しなかった', hiragana: hiraganaPrefix + 'しなかった', romaji: 'nakatta-kei', meaning: '过去否定形' },
+                    ba: { jp: prefix + 'すれば', hiragana: hiraganaPrefix + 'すれば', romaji: 'ba-kei', meaning: '假定形' },
+                    potential: { jp: prefix + 'できる', hiragana: hiraganaPrefix + 'できる', romaji: 'kanoukei', meaning: '可能形' },
+                    volitional: { jp: prefix + 'しよう', hiragana: hiraganaPrefix + 'しよう', romaji: 'ishikei', meaning: '意志形' },
+                    imperative: { jp: prefix + 'しろ', hiragana: hiraganaPrefix + 'しろ', romaji: 'meireikei', meaning: '命令形' },
+                    passive: { jp: prefix + 'される', hiragana: hiraganaPrefix + 'される', romaji: 'ukemikei', meaning: '被动形' },
+                    causative: { jp: prefix + 'させる', hiragana: hiraganaPrefix + 'させる', romaji: 'shiekikei', meaning: '使役形' }
                 };
             } else if (verb === '来る') {
                 return {
-                    masu: { jp: '来ます', romaji: 'kimasu', meaning: '礼貌形' },
-                    te: { jp: '来て', romaji: 'kite', meaning: '连接形' },
-                    ta: { jp: '来た', romaji: 'kita', meaning: '过去形' },
-                    nai: { jp: '来ない', romaji: 'konai', meaning: '否定形' },
-                    nakatta: { jp: '来なかった', romaji: 'konakatta', meaning: '过去否定形' },
-                    ba: { jp: '来れば', romaji: 'kureba', meaning: '假定形' },
-                    potential: { jp: '来られる', romaji: 'korareru', meaning: '可能形' },
-                    volitional: { jp: '来よう', romaji: 'koyou', meaning: '意志形' },
-                    imperative: { jp: '来い', romaji: 'koi', meaning: '命令形' },
-                    passive: { jp: '来られる', romaji: 'korareru', meaning: '被动形' },
-                    causative: { jp: '来させる', romaji: 'kosaseru', meaning: '使役形' }
+                    masu: { jp: '来ます', hiragana: 'きます', romaji: 'kimasu', meaning: '礼貌形' },
+                    te: { jp: '来て', hiragana: 'きて', romaji: 'kite', meaning: '连接形' },
+                    ta: { jp: '来た', hiragana: 'きた', romaji: 'kita', meaning: '过去形' },
+                    nai: { jp: '来ない', hiragana: 'こない', romaji: 'konai', meaning: '否定形' },
+                    nakatta: { jp: '来なかった', hiragana: 'こなかった', romaji: 'konakatta', meaning: '过去否定形' },
+                    ba: { jp: '来れば', hiragana: 'くれば', romaji: 'kureba', meaning: '假定形' },
+                    potential: { jp: '来られる', hiragana: 'こられる', romaji: 'korareru', meaning: '可能形' },
+                    volitional: { jp: '来よう', hiragana: 'こよう', romaji: 'koyou', meaning: '意志形' },
+                    imperative: { jp: '来い', hiragana: 'こい', romaji: 'koi', meaning: '命令形' },
+                    passive: { jp: '来られる', hiragana: 'こられる', romaji: 'korareru', meaning: '被动形' },
+                    causative: { jp: '来させる', hiragana: 'こさせる', romaji: 'kosaseru', meaning: '使役形' }
                 };
             }
         }
@@ -1172,13 +1193,19 @@
                 const form = conjugations[key];
                 const card = document.createElement('div');
                 card.className = 'result-card';
+
+                // 只在汉字版本和假名版本不同时显示假名
+                const hiraganaSection = form.jp !== form.hiragana
+                    ? `<div class="hiragana-reading" style="font-size: 1.3em; color: #667eea; margin: 8px 0; font-weight: 500;">
+                        ひらがな：${form.hiragana}
+                    </div>`
+                    : '';
+
                 card.innerHTML = `
                     <h3>${formNames[key]}</h3>
                     <div class="japanese">${form.jp}</div>
-                    <div class="hiragana-reading" style="font-size: 1.3em; color: #667eea; margin: 8px 0; font-weight: 500;">
-                        ひらがな：${form.jp}
-                    </div>
-                    <div class="romaji">${form.romaji}</div>
+                    ${hiraganaSection}
+                    <div class="romaji" style="color: #999; margin: 5px 0; font-size: 0.9em;">${form.romaji}</div>
                     <div class="explanation">${form.meaning}</div>
                     <button class="speak-btn" onclick="speakText('${form.jp}')">🔊 发音</button>
                 `;
@@ -1332,7 +1359,9 @@
                 verb: verb.jp,
                 meaning: verb.cn,
                 formType: formType,
-                answer: conjugations[formType].jp
+                answer: conjugations[formType].jp,
+                answerHiragana: conjugations[formType].hiragana,
+                formMeaning: conjugations[formType].meaning
             };
 
             // 显示题目
@@ -1356,13 +1385,20 @@
             totalCount++;
             document.getElementById('quizInput').disabled = true;
 
-            if (userAnswer === currentQuiz.answer) {
+            // 接受汉字版本和假名版本两种答案
+            const isCorrect = userAnswer === currentQuiz.answer || userAnswer === currentQuiz.answerHiragana;
+
+            if (isCorrect) {
                 correctCount++;
                 feedback.className = 'feedback correct';
                 feedback.innerHTML = `
                     ✓ 正确！
                     <div style="margin-top: 10px; font-size: 1.2em; color: #155724;">
                         ✨ ${currentQuiz.answer}
+                        ${currentQuiz.answer !== currentQuiz.answerHiragana ? `<br><span style="font-size: 0.9em;">（${currentQuiz.answerHiragana}）</span>` : ''}
+                    </div>
+                    <div style="margin-top: 8px; color: #666; font-size: 0.95em;">
+                        ${currentQuiz.meaning} - ${currentQuiz.formMeaning}
                     </div>
                 `;
                 speakText(currentQuiz.answer);
@@ -1372,9 +1408,13 @@
                 feedback.innerHTML = `
                     ✗ 错误
                     <div class="answer-display">
-                        <strong>正确答案：</strong>${currentQuiz.answer}
-                        <div style="margin-top: 8px; color: #f57c00; font-size: 1.1em;">
-                            ひらがな：${currentQuiz.answer}
+                        <div style="margin-bottom: 8px;"><strong>您的答案：</strong>${userAnswer}</div>
+                        <div><strong>正确答案：</strong>${currentQuiz.answer}</div>
+                        ${currentQuiz.answer !== currentQuiz.answerHiragana ? `<div style="margin-top: 8px; color: #f57c00; font-size: 1.1em;">
+                            ひらがな：${currentQuiz.answerHiragana}
+                        </div>` : ''}
+                        <div style="margin-top: 8px; color: #666; font-size: 0.95em;">
+                            ${currentQuiz.meaning} - ${currentQuiz.formMeaning}
                         </div>
                     </div>
                 `;
@@ -1397,9 +1437,12 @@
             feedback.innerHTML = `
                 已跳过
                 <div class="answer-display">
-                    <strong>正确答案：</strong>${currentQuiz.answer}
-                    <div style="margin-top: 8px; color: #f57c00; font-size: 1.1em;">
-                        ひらがな：${currentQuiz.answer}
+                    <div><strong>正确答案：</strong>${currentQuiz.answer}</div>
+                    ${currentQuiz.answer !== currentQuiz.answerHiragana ? `<div style="margin-top: 8px; color: #f57c00; font-size: 1.1em;">
+                        ひらがな：${currentQuiz.answerHiragana}
+                    </div>` : ''}
+                    <div style="margin-top: 8px; color: #666; font-size: 0.95em;">
+                        ${currentQuiz.meaning} - ${currentQuiz.formMeaning}
                     </div>
                 </div>
             `;
