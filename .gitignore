@@ -35,3 +35,7 @@ Desktop.ini
 
 # Backup files
 index_backup_*.html
+
+# PWA icons (用户需要自己生成)
+icon-192.png
+icon-512.png

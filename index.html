@@ -4,6 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>日语动词变形学习工具</title>
+
+    <!-- PWA 配置 -->
+    <meta name="description" content="一个帮助学习日语动词变形的工具，支持学习模式和练习模式，可离线使用">
+    <meta name="theme-color" content="#667eea">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="日语动词">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icon-192.png">
+
     <style>
         * {
             margin: 0;
@@ -1496,6 +1506,58 @@
 
         // 初始化
         initVerbList();
+
+        // 注册 Service Worker (PWA 离线支持)
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./service-worker.js')
+                    .then((registration) => {
+                        console.log('Service Worker 注册成功:', registration.scope);
+
+                        // 检查更新
+                        registration.addEventListener('updatefound', () => {
+                            const newWorker = registration.installing;
+                            newWorker.addEventListener('statechange', () => {
+                                if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                                    // 新版本可用，提示用户刷新
+                                    if (confirm('发现新版本！点击确定刷新页面使用最新版本。')) {
+                                        newWorker.postMessage({ type: 'SKIP_WAITING' });
+                                        window.location.reload();
+                                    }
+                                }
+                            });
+                        });
+                    })
+                    .catch((error) => {
+                        console.log('Service Worker 注册失败:', error);
+                    });
+
+                // 监听 Service Worker 控制器变化
+                navigator.serviceWorker.addEventListener('controllerchange', () => {
+                    window.location.reload();
+                });
+            });
+        }
+
+        // PWA 安装提示
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            // 阻止默认的安装提示
+            e.preventDefault();
+            deferredPrompt = e;
+
+            // 创建自定义安装按钮（可选）
+            console.log('PWA 可以安装到主屏幕');
+
+            // 你可以在这里显示一个自定义的安装提示
+            // 例如：显示一个"添加到主屏幕"的按钮
+        });
+
+        // 监听安装完成
+        window.addEventListener('appinstalled', () => {
+            console.log('PWA 已成功安装到主屏幕');
+            deferredPrompt = null;
+        });
     </script>
 </body>
 </html>
